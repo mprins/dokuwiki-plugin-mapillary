@@ -1,6 +1,11 @@
 ==== Changes ====
 
 === version ${project.version} ===
+  * use serverside rendering of the iframe to enhance the speed of page rendering
+  * use sass for stylesheet
+  * render metadata 
+  * render odt (requires testing)
+  * make it possible to have more than one image embedded
 
 === version 0.1 ===
   * initial version

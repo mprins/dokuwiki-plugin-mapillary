@@ -38,7 +38,7 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 	public function getType() {
 		return 'substition';
 	}
-	
+
 	/**
 	 *
 	 * @see DokuWiki_Syntax_Plugin::getPType()
@@ -46,7 +46,7 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 	public function getPType() {
 		return 'block';
 	}
-	
+
 	/**
 	 *
 	 * @see Doku_Parser_Mode::getSort()
@@ -54,10 +54,10 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 	public function getSort() {
 		return 305;
 	}
-	
+
 	/**
 	 * Define the syntax pattern.
-	 * The syntax for this plugin is: {{mapillary>imagehash&width}}
+	 * The syntax for this plugin is: {{mapillary>imagehash&width&sequences&legs}}
 	 * where imagehash is the hash of the first image of a sequence
 	 * and width is the widget width in pixels.
 	 *
@@ -68,7 +68,7 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 	public function connectTo($mode) {
 		$this->Lexer->addSpecialPattern ( '\{\{mapillary>[^}]*\}\}', $mode, 'plugin_mapillary' );
 	}
-	
+
 	/**
 	 * parse the syntax.
 	 *
@@ -78,16 +78,20 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 		$match = trim ( substr ( $match, 12, - 2 ) );
 		$params = explode ( '&', $match );
 		$img = $params [0];
-		$width = $params [1];
-		// make sure we have a min. width
+		$width = intval ( $params [1] );
+		// make sure we have a min. width & sanity check
 		if ($width < 100)
-			$width = 350;
+			$width = 320;
+		if ($width > 2048)
+			$width = 2048;
 		return array (
-				$img,
-				$width 
+				hsc ( $img ),
+				$width,
+				hsc ( $sequences ),
+				hsc ( $legs )
 		);
 	}
-	
+
 	/**
 	 *
 	 * @see DokuWiki_Syntax_Plugin::render()
@@ -95,23 +99,47 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 	public function render($mode, Doku_Renderer &$renderer, $data) {
 		if ($data === false)
 			return false;
-		
-		list ( $img, $width ) = $data;
-		
+
+		static $id = 0;
+		list ( $image, $width, $sequences, $legs ) = $data;
+		// this might break, no idea if this url will be persistant but it is mentioned in the api docs
+		$image_url = 'http://d1cuyjsrcm0gby.cloudfront.net/' . $image . '/thumb-1024.jpg';
+
 		if ($mode == 'xhtml') {
-			// add the widget's html and script
-			$renderer->doc .= '<div id="mapillary"></div>';
-			$renderer->doc .= '<script src="//dga406zepc8gy.cloudfront.net/javascripts/mapillary.js" type="text/javascript" charset="utf-8"></script>';
-			$renderer->doc .= '<script type="text/javascript">/*<![CDATA[*/';
-			$renderer->doc .= 'Mapillary.init("mapillary", {image: "' . $img . '", width: "' . $width . '"});';
-			$renderer->doc .= '/*!]]>*/</script>';
+			// based on the embed javascript at http://www.mapillary.com/integrate.html
+			$height = ($width / 4 * 3 * 2 - 30);
+			$url = 'http://www.mapillary.com/jsapi/?';
+			if (! empty ( $image )) {
+				$url .= 'image=' . $image . '&';
+			}
+			if (! empty ( $sequences )) {
+				$url .= 'sequences=' . $sequences . '&';
+			}
+			if (! empty ( $legs )) {
+				$url .= 'legs=' . $legs;
+			}
+
+			$renderer->doc .= '<div id="mapillary' . $id . '" class="mapillary">';
+			$renderer->doc .= '<iframe src="' . $url . '" id="mapillary-iframe" style="width:' . $width . 'px;height:' . $height . 'px;" title="Mapillary (' . $image . ')">';
+			$renderer->externalmedia ( $image_url, 'Mapillary (' . $image . ')', 'left', 1024, null, 'cache', 'nolink' );
+			$renderer->externallink ( 'http://www.mapillary.com/map/im/' . $image, 'Mapillary (' . $image . ')' );
+			$renderer->doc .= '</iframe>';
+			$renderer->doc .= '</div>';
+			$id ++;
 			return true;
 		} elseif ($mode == 'metadata') {
-			// for now return false
-			return false;
+			global $ID;
+			$rel = p_get_metadata ( $ID, 'relation', METADATA_RENDER_USING_CACHE );
+			$img = $rel ['firstimage'];
+			if (empty ( $img )) {
+				$renderer->externalmedia ( $image_url, 'Mapillary (' . $image . ')' );
+			}
+			return true;
 		} elseif ($mode == 'odt') {
-			// for now return false, in future show first image of sequence or something
-			return false;
+			$renderer->p_open ();
+			$renderer->externalmedia ( $image_url, 'Mapillary (' . $image . ')', 'left', 1024, null, 'cache', 'nolink' );
+			$renderer->p_close ();
+			return true;
 		}
 		return false;
 	}
