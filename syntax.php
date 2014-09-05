@@ -77,13 +77,15 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 	public function handle($match, $state, $pos, Doku_Handler &$handler) {
 		$match = trim ( substr ( $match, 12, - 2 ) );
 		$params = explode ( '&', $match );
-		$img = $params [0];
-		$width = intval ( $params [1] );
+		list ( $img, $width, $sequences, $legs ) = $params;
+
 		// make sure we have a min. width & sanity check
+		$width = intval ( $width );
 		if ($width < 100)
 			$width = 320;
 		if ($width > 2048)
 			$width = 2048;
+
 		return array (
 				hsc ( $img ),
 				$width,
