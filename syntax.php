@@ -121,9 +121,11 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 
 			$renderer->doc .= '<div id="mapillary' . $id . '" class="mapillary">';
 			$renderer->doc .= '<iframe src="' . $url . '" id="mapillary-iframe" style="width:' . $width . 'px;height:' . $height . 'px;" title="Mapillary (' . $image . ')">';
+			$renderer->doc .= '</iframe>';
+			$renderer->doc .= '<div class="mapillary_print">';
 			$renderer->externalmedia ( $image_url, 'Mapillary (' . $image . ')', 'left', 1024, null, 'cache', 'nolink' );
 			$renderer->externallink ( 'http://www.mapillary.com/map/im/' . $image, 'Mapillary (' . $image . ')' );
-			$renderer->doc .= '</iframe>';
+			$renderer->doc .= '</div>';
 			$renderer->doc .= '</div>';
 			$id ++;
 			return true;

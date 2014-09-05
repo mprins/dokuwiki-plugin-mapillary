@@ -6,6 +6,7 @@
   * render metadata 
   * render odt (requires testing)
   * make it possible to have more than one image embedded
+  * add print styling
 
 === version 0.1 ===
   * initial version
