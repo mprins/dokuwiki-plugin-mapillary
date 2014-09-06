@@ -2,6 +2,7 @@
 
 === version ${project.version} ===
   * add support for sequences and legs
+  * add editor toolbar button
 
 === version 0.2 ===
   * use serverside rendering of the iframe to enhance the speed of page rendering
