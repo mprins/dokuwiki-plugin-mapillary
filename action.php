@@ -28,7 +28,7 @@ require_once (DOKU_PLUGIN . 'action.php');
  * @author Mark C. Prins <mprins@users.sf.net>
  */
 class action_plugin_mapillary extends DokuWiki_Action_Plugin {
-
+	
 	/**
 	 * Register for events.
 	 *
@@ -36,23 +36,23 @@ class action_plugin_mapillary extends DokuWiki_Action_Plugin {
 	 *        	DokuWiki's event controller object. Also available as global $EVENT_HANDLER
 	 */
 	public function register(Doku_Event_Handler $controller) {
-		$controller->register_hook ( 'TOOLBAR_DEFINE', 'AFTER', $this, 'insert_button', array () );
+		$controller->register_hook ( 'TOOLBAR_DEFINE', 'AFTER', $this, 'insert_mapillary_btn', array () );
 	}
-
+	
 	/**
 	 * Inserts the toolbar button.
 	 *
 	 * @param Doku_Event $event
 	 *        	the DokuWiki event
 	 */
-	function insert_button(Doku_Event &$event, $param) {
+	function insert_mapillary_btn(Doku_Event &$event, $param) {
 		$event->data [] = array (
 				'type' => 'format',
 				'title' => 'Mapillary widget',
-				'icon' => '../../plugins/mapillary/toolbar/mapillary.png',
+				'icon' => '../../plugins/mapillary/images/mapillary.png',
 				'open' => '{{mapillary>',
-				'sample' => 'IMAGE',
-				'close' => '&500}}'
+				'sample' => 'JEyWkAPk0cqzCvh09HRABg',
+				'close' => '&500}}' 
 		);
 	}
 }
