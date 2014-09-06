@@ -1,6 +1,9 @@
 ==== Changes ====
 
 === version ${project.version} ===
+  * 
+
+=== version 0.3 ===
   * add support for sequences and legs
   * add editor toolbar button
 
