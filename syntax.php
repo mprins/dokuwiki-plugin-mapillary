@@ -66,7 +66,7 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 	 * @see Doku_Parser_Mode::connectTo()
 	 */
 	public function connectTo($mode) {
-		$this->Lexer->addSpecialPattern ( '\{\{mapillary>[^}]*\}\}', $mode, 'plugin_mapillary' );
+		$this->Lexer->addSpecialPattern ( '\{\{\s?mapillary>[^}\s]*\s?\}\}', $mode, 'plugin_mapillary' );
 	}
 
 	/**
@@ -75,7 +75,17 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 	 * @see DokuWiki_Syntax_Plugin::handle()
 	 */
 	public function handle($match, $state, $pos, Doku_Handler &$handler) {
-		$match = trim ( substr ( $match, 12, - 2 ) );
+		$float = 'none';
+		$space = stripos ( $match, ' ' );
+		if ($space > 0) {
+			if ($space < 12) {
+				$float = 'right';
+			}
+			if ($space > 12) {
+				$float = 'left';
+			}
+		}
+		$match = substr ( str_replace (' ','', $match ), 12, - 2 );
 		$params = explode ( '&', $match );
 		list ( $img, $width, $sequences, $legs ) = $params;
 
@@ -90,7 +100,8 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 				hsc ( $img ),
 				$width,
 				hsc ( $sequences ),
-				hsc ( $legs )
+				hsc ( $legs ),
+				$float
 		);
 	}
 
@@ -103,7 +114,7 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 			return false;
 
 		static $id = 0;
-		list ( $image, $width, $sequences, $legs ) = $data;
+		list ( $image, $width, $sequences, $legs, $float ) = $data;
 		// this might break, no idea if this url will be persistant but it is mentioned in the api docs
 		$image_url = 'http://d1cuyjsrcm0gby.cloudfront.net/' . $image . '/thumb-1024.jpg';
 
@@ -121,10 +132,10 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 				$url .= 'legs=' . $legs;
 			}
 
-			$renderer->doc .= '<div id="mapillary' . $id . '" class="mapillary">';
+			$renderer->doc .= '<div id="mapillary' . $id . '" class="mapillary-' . $float . '">';
 			$renderer->doc .= '<iframe src="' . $url . '" id="mapillary-iframe" style="width:' . $width . 'px;height:' . $height . 'px;" title="Mapillary (' . $image . ')">';
 			$renderer->doc .= '</iframe>';
-			$renderer->doc .= '<div class="mapillary_print">';
+			$renderer->doc .= '<div class="mapillary-print">';
 			$renderer->externalmedia ( $image_url, 'Mapillary (' . $image . ')', 'left', 1024, null, 'cache', 'nolink' );
 			$renderer->externallink ( 'http://www.mapillary.com/map/im/' . $image, 'Mapillary (' . $image . ')' );
 			$renderer->doc .= '</div>';

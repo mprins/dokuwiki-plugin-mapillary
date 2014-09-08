@@ -14,26 +14,5 @@
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 //
 
-// mapillary widget screen styles.
-
-%mapillary {
-	> iframe {
-		border: 0;
-	}	
-}
-
-@each $float in $floats {
-	.mapillary-#{$float} {
-    	@extend %mapillary;
-		> iframe {
-			float: #{$float};
-			@if ($float != none){
-				padding-#{opposite-position($float)}: 1em;
-			}
-		}
-	}
-}
-
-.mapillary-print {
-	display: none;
-}
+// floats for the widget.
+$floats: none, left, right;
