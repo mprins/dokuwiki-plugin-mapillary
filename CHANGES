@@ -1,7 +1,7 @@
 ==== Changes ====
 
 === version ${project.version} ===
-  * 
+  * support for Dokuwiki (left/right/none) media alignment convention
 
 === version 0.3 ===
   * add support for sequences and legs
