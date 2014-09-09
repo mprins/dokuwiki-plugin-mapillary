@@ -32,4 +32,6 @@
 
 .mapillary-print {
 	display: initial;
+	float: left;
+	page-break-inside: avoid;
 }
