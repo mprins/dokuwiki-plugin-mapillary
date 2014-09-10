@@ -3,7 +3,7 @@
 === version ${project.version} ===
   *
 
-=== version 0.3 ===
+=== version 0.4 ===
   * support for Dokuwiki (left/right/none) media alignment convention
 
 === version 0.3 ===
