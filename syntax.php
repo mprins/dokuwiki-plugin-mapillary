@@ -92,6 +92,11 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 		$match = substr ( str_replace ( ' ', '', $match ), 12, - 2 );
 		$params = explode ( '&', $match );
 		list ( $img, $width, $sequences, $legs ) = $params;
+		//TODO add support for showImage=
+		//TODO add support for showPlayControls=
+		//TODO add support for showMap=
+		//TODO add support for directions=
+		//TODO add support for showThumbs=
 
 		// make sure we have a min. width & sanity check
 		$width = intval ( $width );
@@ -110,9 +115,12 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 	}
 
 	/**
-	 * render the syntax for xhtml, odt or metadata.
+	 * Render the syntax for xhtml, odt or metadata.
 	 *
 	 * @see DokuWiki_Syntax_Plugin::render()
+	 *
+	 * @see http://www.mapillary.com/javascripts/mapillary.js
+	 * @see https://dga406zepc8gy.cloudfront.net/javascripts/mapillary.js
 	 */
 	public function render($mode, Doku_Renderer &$renderer, $data) {
 		if ($data === false)
