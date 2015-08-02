@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2014 Mark C. Prins <mprins@users.sf.net>
+// Copyright (c) 2014-2015 Mark C. Prins <mprins@users.sf.net>
 //
 // Permission to use, copy, modify, and distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -17,23 +17,24 @@
 // mapillary widget screen styles.
 
 %mapillary {
-	> iframe {
-		border: 0;
-	}	
+  > iframe {
+    border: 0;
+  }
 }
 
 @each $float in $floats {
-	.mapillary-#{$float} {
-    	@extend %mapillary;
-		> iframe {
-			float: #{$float};
-			@if ($float != none){
-				padding-#{opposite-position($float)}: 1em;
-			}
-		}
-	}
+  .mapillary-#{$float} {
+    @extend %mapillary;
+
+    > iframe {
+      float: #{$float};
+      @if ($float != none){
+        padding-#{opposite-position($float)}: 1em;
+      }
+    }
+  }
 }
 
 .mapillary-print {
-	display: none;
+  display: none;
 }
