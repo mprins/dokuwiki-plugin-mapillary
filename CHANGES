@@ -1,6 +1,9 @@
 ==== Changes ====
 
 === version ${project.version} ===
+  *
+
+=== version 0.5 ===
   * fix display (heigth) of the widget
 
 === version 0.4 ===
