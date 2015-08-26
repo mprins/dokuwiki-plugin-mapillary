@@ -134,7 +134,9 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 
 		if ($mode == 'xhtml') {
 			// based on the embed javascript at http://www.mapillary.com/integrate.html
-			$height = ($width / 4 * 3 * 2 - 30);
+			// TODO this used to work but not anaymore $height = ($width / 4 * 3 * 2 - 30);
+			/*h= map div height + photo + location,author etc + mapillary link*/
+			$height = 150 + 3 / 4 * intval($width) + 40 + 20;
 			$url = '//www.mapillary.com/jsapi/?';
 			if (! empty ( $image )) {
 				$url .= 'image=' . $image . '&';
@@ -148,7 +150,7 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 
 			$renderer->doc .= '<div id="mapillary-' . $id . '" class="mapillary-' . $float . '">';
 			$renderer->doc .= '<iframe src="' . $url . '" id="mapillary-iframe-' . $id . '"';
-			$renderer->doc .= '  width="' . $width . '" height="' . $height . '" title="Mapillary (' . $image . ')">';
+			$renderer->doc .= '  style="width:' . $width . 'px;height:' . $height . 'px;"; title="Mapillary (' . $image . ')">';
 			$renderer->doc .= '</iframe>';
 			$renderer->doc .= '<figure class="mapillary-print">';
 			$renderer->externalmedia ( $image_url, 'Mapillary (' . $image . ')', 'left', 1024, null, 'cache', 'nolink' );
