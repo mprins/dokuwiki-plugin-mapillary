@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2014 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2014-2016 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -76,7 +76,7 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 	 *
 	 * @see DokuWiki_Syntax_Plugin::handle()
 	 */
-	public function handle($match, $state, $pos, Doku_Handler &$handler) {
+	public function handle($match, $state, $pos, Doku_Handler $handler) {
 		// check for float assignment left/right
 		$float = 'none';
 		$space = stripos ( $match, ' ' );
@@ -122,7 +122,7 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 	 * @see http://www.mapillary.com/javascripts/mapillary.js
 	 * @see https://dga406zepc8gy.cloudfront.net/javascripts/mapillary.js
 	 */
-	public function render($mode, Doku_Renderer &$renderer, $data) {
+	public function render($mode, Doku_Renderer $renderer, $data) {
 		if ($data === false)
 			return false;
 

@@ -1,7 +1,7 @@
 ==== Changes ====
 
 === version ${project.version} ===
-  *
+  * PHP 7 compatibility fixes
 
 === version 0.5 ===
   * fix display (heigth) of the widget
