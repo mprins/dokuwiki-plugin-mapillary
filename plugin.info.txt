@@ -1,7 +1,7 @@
 base   mapillary
 author Mark C. Prins
 email  mprins@users.sf.net
-date   ${buildNumber} (${project.version})
+date   2015-08-26 (0.5)
 name   mapillary plugin
 desc   Allow a user to add a Mapillary widget to a page
 url    http://www.dokuwiki.org/plugin:mapillary

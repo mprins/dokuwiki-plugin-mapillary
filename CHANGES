@@ -1,6 +1,5 @@
 ==== Changes ====
 
-=== version ${project.version} ===
   * PHP 7 compatibility fixes
 
 === version 0.5 ===
