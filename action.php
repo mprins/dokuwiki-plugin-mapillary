@@ -14,11 +14,11 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-if (! defined ( 'DOKU_INC' ))
+if (!defined('DOKU_INC'))
 	die ();
 
-if (! defined ( 'DOKU_PLUGIN' ))
-	define ( 'DOKU_PLUGIN', DOKU_INC . 'lib/plugins/' );
+if (!defined('DOKU_PLUGIN'))
+	define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 require_once (DOKU_PLUGIN . 'action.php');
 
 /**
@@ -36,7 +36,7 @@ class action_plugin_mapillary extends DokuWiki_Action_Plugin {
 	 *        	DokuWiki's event controller object. Also available as global $EVENT_HANDLER
 	 */
 	public function register(Doku_Event_Handler $controller) {
-		$controller->register_hook ( 'TOOLBAR_DEFINE', 'AFTER', $this, 'insert_mapillary_btn', array () );
+		$controller->register_hook('TOOLBAR_DEFINE', 'AFTER', $this, 'insert_mapillary_btn', array());
 	}
 	
 	/**
@@ -45,8 +45,8 @@ class action_plugin_mapillary extends DokuWiki_Action_Plugin {
 	 * @param Doku_Event $event
 	 *        	the DokuWiki event
 	 */
-	function insert_mapillary_btn(Doku_Event &$event, $param) {
-		$event->data [] = array (
+	function insert_mapillary_btn(Doku_Event&$event, $param) {
+		$event->data [ ] = array(
 				'type' => 'format',
 				'title' => 'Mapillary widget',
 				'icon' => '../../plugins/mapillary/images/mapillary.png',

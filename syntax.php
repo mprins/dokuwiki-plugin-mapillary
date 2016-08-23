@@ -14,11 +14,11 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-if (! defined ( 'DOKU_INC' ))
+if (!defined('DOKU_INC'))
 	die ();
 
-if (! defined ( 'DOKU_PLUGIN' ))
-	define ( 'DOKU_PLUGIN', DOKU_INC . 'lib/plugins/' );
+if (!defined('DOKU_PLUGIN'))
+	define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 
 require_once (DOKU_PLUGIN . 'syntax.php');
 
@@ -68,7 +68,7 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 	 * @see Doku_Parser_Mode::connectTo()
 	 */
 	public function connectTo($mode) {
-		$this->Lexer->addSpecialPattern ( '\{\{\s?mapillary>[^}\s]*\s?\}\}', $mode, 'plugin_mapillary' );
+		$this->Lexer->addSpecialPattern('\{\{\s?mapillary>[^}\s]*\s?\}\}', $mode, 'plugin_mapillary');
 	}
 
 	/**
@@ -79,7 +79,7 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 	public function handle($match, $state, $pos, Doku_Handler $handler) {
 		// check for float assignment left/right
 		$float = 'none';
-		$space = stripos ( $match, ' ' );
+		$space = stripos($match, ' ');
 		if ($space > 0) {
 			if ($space < 12) {
 				$float = 'right';
@@ -89,9 +89,9 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 			}
 		}
 		// parse te match
-		$match = substr ( str_replace ( ' ', '', $match ), 12, - 2 );
-		$params = explode ( '&', $match );
-		list ( $img, $width, $sequences, $legs ) = $params;
+		$match = substr(str_replace(' ', '', $match), 12, - 2);
+		$params = explode('&', $match);
+		list ($img, $width, $sequences, $legs) = $params;
 		//TODO add support for showImage=
 		//TODO add support for showPlayControls=
 		//TODO add support for showMap=
@@ -99,17 +99,17 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 		//TODO add support for showThumbs=
 
 		// make sure we have a min. width & sanity check
-		$width = intval ( $width );
+		$width = intval($width);
 		if ($width < 100)
 			$width = 320;
 		if ($width > 2048)
 			$width = 2048;
 
-		return array (
-				hsc ( $img ),
+		return array(
+				hsc($img),
 				$width,
-				hsc ( $sequences ),
-				hsc ( $legs ),
+				hsc($sequences),
+				hsc($legs),
 				$float
 		);
 	}
@@ -123,11 +123,12 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 	 * @see https://dga406zepc8gy.cloudfront.net/javascripts/mapillary.js
 	 */
 	public function render($mode, Doku_Renderer $renderer, $data) {
-		if ($data === false)
-			return false;
+		if ($data === false) {
+					return false;
+		}
 
 		static $id = 0;
-		list ( $image, $width, $sequences, $legs, $float ) = $data;
+		list ($image, $width, $sequences, $legs, $float) = $data;
 		// this url might break, no idea if this url will be persistant but it
 		// is mentioned in the api docs
 		$image_url = 'http://d1cuyjsrcm0gby.cloudfront.net/' . $image . '/thumb-1024.jpg';
@@ -138,13 +139,13 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 			/*h= map div height + photo + location,author etc + mapillary link*/
 			$height = 150 + 3 / 4 * intval($width) + 40 + 20;
 			$url = '//www.mapillary.com/jsapi/?';
-			if (! empty ( $image )) {
+			if (!empty ($image)) {
 				$url .= 'image=' . $image . '&';
 			}
-			if (! empty ( $sequences )) {
+			if (!empty ($sequences)) {
 				$url .= 'sequences=' . $sequences . '&';
 			}
-			if (! empty ( $legs )) {
+			if (!empty ($legs)) {
 				$url .= 'legs=' . $legs;
 			}
 
@@ -153,29 +154,29 @@ class syntax_plugin_mapillary extends DokuWiki_Syntax_Plugin {
 			$renderer->doc .= '  style="width:' . $width . 'px;height:' . $height . 'px;"; title="Mapillary (' . $image . ')">';
 			$renderer->doc .= '</iframe>';
 			$renderer->doc .= '<figure class="mapillary-print">';
-			$renderer->externalmedia ( $image_url, 'Mapillary (' . $image . ')', 'left', 1024, null, 'cache', 'nolink' );
+			$renderer->externalmedia($image_url, 'Mapillary (' . $image . ')', 'left', 1024, null, 'cache', 'nolink');
 			$renderer->doc .= '<figcaption>Mapillary: ';
-			$renderer->externallink ( 'http://www.mapillary.com/map/im/' . $image, $image );
+			$renderer->externallink('http://www.mapillary.com/map/im/' . $image, $image);
 			$renderer->doc .= ' (CC BY-SA 4.0)</figcaption></figure>';
 			$renderer->doc .= '</div>';
 			$id ++;
 			return true;
 		} elseif ($mode == 'metadata') {
 			global $ID;
-			$rel = p_get_metadata ( $ID, 'relation', METADATA_RENDER_USING_CACHE );
-			$img = $rel ['firstimage'];
-			if (empty ( $img )) {
-				$renderer->externalmedia ( $image_url, 'Mapillary (' . $image . ')' );
+			$rel = p_get_metadata($ID, 'relation', METADATA_RENDER_USING_CACHE);
+			$img = $rel [ 'firstimage' ];
+			if (empty ($img)) {
+				$renderer->externalmedia($image_url, 'Mapillary (' . $image . ')');
 			}
 			return true;
 		} elseif ($mode == 'odt') {
-			$renderer->p_open ();
-			$renderer->externalmedia ( $image_url, 'Mapillary (' . $image . ')', 'left', 1024, null, 'cache', 'nolink' );
+			$renderer->p_open();
+			$renderer->externalmedia($image_url, 'Mapillary (' . $image . ')', 'left', 1024, null, 'cache', 'nolink');
 			$renderer->linebreak();
 			$renderer->cdata('Mapillary: ');
-			$renderer->externallink ( 'http://www.mapillary.com/map/im/' . $image, $image );
+			$renderer->externallink('http://www.mapillary.com/map/im/' . $image, $image);
 			$renderer->cdata(' (CC BY-SA 4.0)');
-			$renderer->p_close ();
+			$renderer->p_close();
 			return true;
 		}
 		return false;
