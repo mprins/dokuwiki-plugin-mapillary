@@ -1,3 +1,8 @@
+**This plugin is currently broken as Mapillary discontinued their embedding widget and the underlying API. The new API relies on WebGL and requires considerable hardware resources.**
+Please use the iframe plugin with the embedding options that Mapillary provides [http://blog.mapillary.com/update/2016/11/30/embed-mapillary.html]
+
+
+
 Mapillary plugin for DokuWiki
 
 Provide a syntax and rendering of a Mapillary sequence in your wiki page.
